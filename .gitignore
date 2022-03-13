@@ -1,0 +1,8 @@
+*.html
+*.xml
+
+__pycache__
+
+store_to_aws.py
+
+try.robot

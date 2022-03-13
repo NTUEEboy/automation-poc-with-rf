@@ -1,0 +1,4 @@
+wmi == 1.5.1
+requests == 2.25.1
+robotframework == 3.2.2
+robotframework-seleniumlibrary == 4.5.0

@@ -1,0 +1,38 @@
+name: Run master build test automation
+
+on:
+  push:
+    branches:
+      - ming-try-actions
+
+jobs:
+  run_CAM_on_my_machine:
+    runs-on: [self-hosted, Windows, X64]
+    steps:
+      - name: Cleans self-hosted workspace
+        run: rm -r -Force "${{ github.workspace }}\*"
+      - uses: actions/checkout@v2
+        with:
+          repository: "NZXTCorp/cam-app"
+          token: ${{ secrets.MINGS_TOKEN }}
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          always-auth: true
+          node-version: 12.x
+          registry-url: https://registry.npmjs.org
+          scope: "@nzxt"
+      - name: install dependencies and build
+        run: |
+          cd ./packages/cam-app
+          npm install
+          copy .env.example .env
+          npm run dist
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_READ_TOKEN }}
+      - name: run installer
+        run: "./package/cam-app/dist/NZXT CAM Setup*"
+      # - name: run test on my machine
+      #   run: |
+      #     robot C:\work_playground\test\login_test.robot
+      #     python3 C:\work_playground\main.py
